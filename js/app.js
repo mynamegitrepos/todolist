@@ -11,7 +11,7 @@ const UNCHECK = "fa-circle-thin";
 const LINE_THROUGH = "lineThrough";
 
 // Variables
-let LIST, id;
+let LIST, id, trash;
 
 // get item from localstorage
 let data = localStorage.getItem("TODO");
@@ -43,7 +43,7 @@ clear.addEventListener("click", function(){
 // Mostrar todays date
 const options = {weekday:"long", month:"short", day:"numeric"};
 const today = new Date();
-dateElement.innerHTML = today.toLocaleDateString("en-US", options);
+dateElement.innerHTML = today.toLocaleDateString("pt-BR", options);
 
 function clock(){
 				var data=new Date();
@@ -77,6 +77,7 @@ function clock(){
 					document.getElementById("image").style.backgroundImage =  "url('img/bgmorning.png')";
 					document.getElementById("image").style.backgroundSize = "cover";
 				}
+
 			}
 /* “setInterval” will call the function “clock()” de um em um segundo.*/
 			var timer=setInterval(clock,1000);
@@ -90,9 +91,9 @@ function addToDo(toDo, id, done, trash){
    const LINE = done ? LINE_THROUGH : "";
    const item = `
 	<li class="item">
-	    <i class="fa fa-check-circle co" job="complete" id="${id}"></i>
+	    <i class="fa ${DONE} co" job="complete" id="${id}"></i>
 		<p class="text ${LINE}">${toDo}</p>
-		<i class="fa fa-trash-o de" job="delete" id="${{id}}"></i>
+		<i class="fa fa-trash-o de" job="delete" id="${id}"></i>
     </li>
 	`;
 	const position = "beforeend";
@@ -126,13 +127,14 @@ function completeToDo(element){
 	element.classList.toggle(UNCHECK);
 	element.parentNode.querySelector(".text").classList.toggle(LINE_THROUGH);
 
-	LIST[element.id].done = LIST[element.id].done ? false : true;
+	LIST[element.id].done = LIST[element.id].done ? true : false;
 }
 
 // remove to do
 function removeToDo(element){
 	element.parentNode.parentNode.removeChild(element.parentNode);
 	LIST[element.id].trash = true;
+
 }
 // target the items created dynamically
 list.addEventListener("click", function(event){
@@ -142,7 +144,7 @@ list.addEventListener("click", function(event){
     if(elementJob == "complete"){
     	completeToDo(element);
     }else if(elementJob == "delete"){
-    	removeToDo(element);
+    	 removeToDo(element);
     }
     // add item to localstorage (this code must added where the LIST array i updated)	
     localStorage.setItem("TODO", JSON.stringify(LIST));
